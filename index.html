@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Experiment 2.2</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px;
+}
+
+.nav button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: cyan;
+    border: none;
+    cursor: pointer;
+}
+
+.section {
+    display: none;
+    margin-top: 20px;
+}
+
+.box {
+    background: #1e293b;
+    padding: 20px;
+    margin: 20px auto;
+    width: 300px;
+    border-radius: 10px;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📘 Experiment 2.2</h1>
+
+<div class="nav">
+    <button onclick="show('m')">2.2.1 Middleware</button>
+    <button onclick="show('j')">2.2.2 JWT</button>
+    <button onclick="show('a')">2.2.3 ACID</button>
+</div>
+
+<!-- ================= MIDDLEWARE ================= -->
+<div id="m" class="section">
+    <h2>🚀 Middleware</h2>
+
+    <div class="box">
+        <button onclick="fetch('/api/public').then(r=>r.text()).then(d=>mout.innerText=d)">
+            Public
+        </button>
+        <button onclick="fetch('/api/protected',{headers:{authorization:'valid_token'}}).then(r=>r.text()).then(d=>mout.innerText=d)">
+            Protected
+        </button>
+        <p id="mout"></p>
+    </div>
+</div>
+
+<!-- ================= JWT ================= -->
+<div id="j" class="section">
+    <h2>🔐 JWT Banking</h2>
+
+    <div class="box">
+        <input id="user" placeholder="Username">
+        <input id="pass" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="jwtOut"></p>
+    </div>
+</div>
+
+<!-- ================= ACID ================= -->
+<div id="a" class="section">
+    <h2>🏦 ACID Transactions</h2>
+
+    <div class="box">
+        <button onclick="fetch('/api/acid').then(r=>r.json()).then(d=>acidOut.innerText=d.message)">
+            Run Transaction
+        </button>
+        <p id="acidOut"></p>
+    </div>
+</div>
+
+<script>
+function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+}
+
+// JWT login
+function login() {
+    fetch('/api/login', { method:'POST' })
+    .then(res=>res.json())
+    .then(d=>{
+        document.getElementById("jwtOut").innerText = "Token: " + d.token;
+    });
+}
+</script>
+
+</body>
+</html>

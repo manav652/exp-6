@@ -1,0 +1,15 @@
+<h2>ACID Transaction</h2>
+
+<button onclick="run()">Run Transaction</button>
+
+<p id="acidOut"></p>
+
+<script>
+function run() {
+    fetch('/api/acid')
+    .then(res=>res.json())
+    .then(d=>{
+        acidOut.innerText = d.message;
+    });
+}
+</script>

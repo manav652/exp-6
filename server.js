@@ -1,29 +1,37 @@
-
-require("dotenv").config();
-const express=require("express");
-const mongoose=require("mongoose");
-const app=express();
+const express = require('express');
+const app = express();
+const path = require('path');
 
 app.use(express.json());
+app.use(express.static('public'));
 
-// logging middleware
-app.use((req,res,next)=>{
- console.log(req.method, req.url);
- next();
+// ================= ROUTES =================
+
+// Middleware Exp
+app.get('/api/public', (req, res) => {
+    res.send("Public Route Working");
 });
 
-// auth middleware
-const auth=(req,res,next)=>{
- const token=req.headers.authorization;
- if(!token) return res.status(401).json({msg:"No token"});
- next();
-};
+app.get('/api/protected', (req, res) => {
+    const token = req.headers['authorization'];
+    if (token === "valid_token") {
+        res.send("Protected Access Granted");
+    } else {
+        res.status(401).send("Unauthorized");
+    }
+});
 
-mongoose.connect("mongodb://127.0.0.1:27017/exp6");
+// JWT Exp (dummy)
+app.post('/api/login', (req, res) => {
+    res.json({ token: "valid_token" });
+});
 
-app.get("/",(req,res)=>res.send("EXP6 RUNNING"));
+// ACID Exp (dummy for UI)
+app.get('/api/acid', (req, res) => {
+    res.json({ message: "Transaction Successful (Demo)" });
+});
 
-// protected route
-app.get("/protected",auth,(req,res)=>res.json({msg:"Authorized"}));
-
-app.listen(3000,()=>console.log("Server running"));
+// ================= START =================
+app.listen(3000, () => {
+    console.log("🚀 Server running on http://localhost:3000");
+});

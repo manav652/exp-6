@@ -1,0 +1,15 @@
+<h2>JWT Experiment</h2>
+
+<button onclick="login()">Login</button>
+
+<p id="jwtOut"></p>
+
+<script>
+function login() {
+    fetch('/api/login', { method:'POST' })
+    .then(res=>res.json())
+    .then(d=>{
+        jwtOut.innerText = "Token: " + d.token;
+    });
+}
+</script>

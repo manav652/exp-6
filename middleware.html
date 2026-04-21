@@ -1,0 +1,22 @@
+<h2>Middleware Experiment</h2>
+
+<button onclick="callPublic()">Public</button>
+<button onclick="callProtected()">Protected</button>
+
+<p id="out"></p>
+
+<script>
+function callPublic() {
+    fetch('/api/public')
+    .then(res=>res.text())
+    .then(d=>out.innerText=d);
+}
+
+function callProtected() {
+    fetch('/api/protected', {
+        headers: { authorization: "valid_token" }
+    })
+    .then(res=>res.text())
+    .then(d=>out.innerText=d);
+}
+</script>
